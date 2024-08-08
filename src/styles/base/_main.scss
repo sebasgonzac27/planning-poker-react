@@ -1,0 +1,10 @@
+@use '../variables' as *;
+
+body {
+    background-image: radial-gradient(circle, $bg-dark 0%, $bg-soft 100%);
+    width: 100dvw;
+    height: 100dvh;
+    color: $color;
+    font-weight: $font-regular;
+    font-family: 'Poppins';
+}
