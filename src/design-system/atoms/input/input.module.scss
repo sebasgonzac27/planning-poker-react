@@ -1,0 +1,39 @@
+@use '../../../styles/variables' as *;
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+
+    &__label {
+        font-size: 0.9rem;
+        font-weight: $font-bold;
+        color: $input-color;
+    }
+
+    &__input {
+        padding: 10px 15px;
+        border: 1px solid $input-border;
+        border-radius: 100px;
+        font-size: 0.9rem;
+        font-weight: $font-regular;
+        color: $input-color;
+        background-color: transparent;
+
+        &::placeholder {
+            color: $placeholder-color;
+        }
+    }
+
+    &__error-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__error {
+        font-size: 0.6rem;
+        font-weight: $font-regular;
+        color: $input-color;
+    }
+}

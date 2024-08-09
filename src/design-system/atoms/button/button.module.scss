@@ -1,0 +1,44 @@
+@use '../../../styles/variables' as *;
+
+.button {
+    font-weight: $font-semibold;
+    border-radius: 9999px;
+    width: fit-content;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+
+    &--primary {
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: $btn-bg-primary;
+        color: $btn-color-primary;
+    }
+
+    &--secondary {
+        padding: 6px 16px;
+        font-size: 14px;
+        background-color: transparent;
+        color: $btn-bg-primary;
+        border: 1px solid $btn-bg-primary;
+    }
+
+    &--tertiary {
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: $btn-bg-tertiary;
+        color: $btn-bg-primary;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        pointer-events: none;
+        opacity: 0.4;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .button {
+        width: 100%;
+    }
+}
