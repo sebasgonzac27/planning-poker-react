@@ -1,0 +1,48 @@
+@use '../../styles/variables' as *;
+
+.create-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+    &__header {
+        padding: 35px 80px;
+    }
+
+    &__banner {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    &__title {
+        font-size: 21px;
+        font-weight: $font-semibold;
+    }
+
+    &__content {
+        display: grid;
+        place-content: center;
+        flex: 1;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        width: 292px;
+        gap: 31px;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .create-container {
+        &__header {
+            padding: 30px;
+        }
+
+        &__content {
+            padding: 30px;
+        }
+    }
+}
