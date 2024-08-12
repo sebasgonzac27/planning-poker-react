@@ -1,0 +1,18 @@
+.modal {
+
+    &__body {
+        display: grid;
+        place-items: center;
+        padding: 4rem 3rem;
+        width: clamp(15rem, 80vw, 35rem);
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+    }
+}
