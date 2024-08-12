@@ -6,11 +6,16 @@ import {
 } from "react-router-dom";
 import { Toaster } from "sonner";
 import CreateParty from "./pages/create-party/create-party";
+import JoinParty from "./pages/join-party/join-party";
 
 const router = createBrowserRouter([
   {
     path: "/create-party",
     element: <CreateParty />,
+  },
+  {
+    path: "/join-party/:id",
+    element: <JoinParty />,
   },
   {
     path: "/",
