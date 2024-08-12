@@ -1,0 +1,39 @@
+@use '../../../styles/variables' as *;
+
+.card {
+    border: solid 1px $card-border;
+    background-color: transparent;
+    color: $color;
+    font-weight: bold;
+
+    &--small {
+        min-width: 35px;
+        min-height: 55px;
+        border-radius: 6px;
+    }
+
+    &--large {
+        min-width: 50px;
+        min-height: 80px;
+        border-radius: 8px;
+    }
+
+    &--filled {
+        background-color: $card-bg;
+        color: $card-color-dark;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .card {
+        &--small {
+            min-width: 30px;
+            min-height: 50px;
+        }
+
+        &--large {
+            min-width: 40px;
+            min-height: 70px;
+        }
+    }
+}
