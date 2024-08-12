@@ -1,0 +1,50 @@
+@use '../../../../styles/variables' as *;
+
+.header {
+    position: relative;
+    padding: 35px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__title {
+        position: absolute;
+        text-align: center;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 26px;
+        font-weight: $font-bold;
+    }
+
+    &__badge {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &__avatar {
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 10px 15px;
+
+        &__logo {
+            width: 45px;
+            height: 45px;
+        }
+
+        &__title {
+            position: inherit;
+            transform: none;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        &__button {
+            display: none;
+        }
+    }
+}
