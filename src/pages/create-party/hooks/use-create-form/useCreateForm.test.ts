@@ -104,6 +104,6 @@ describe('useCreateForm', () => {
     expect(createPartyMock).toHaveBeenCalledTimes(1)
     expect(createPartyMock).toHaveBeenCalledWith('test')
     expect(navigateMock).toHaveBeenCalledTimes(1)
-    expect(navigateMock).toHaveBeenCalledWith(`/join?partyId=${expectedId}`)
+    expect(navigateMock).toHaveBeenCalledWith(`/join-party/${expectedId}`)
   })
 })

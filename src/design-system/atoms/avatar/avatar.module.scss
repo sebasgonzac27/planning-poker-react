@@ -1,0 +1,23 @@
+@use '../../../styles/variables' as *;
+
+.avatar {
+    background-color: $badge-bg;
+    color: $badge-color;
+    font-weight: $font-bold;
+    display: grid;
+    place-content: center;
+    border-radius: 50%;
+    text-transform: uppercase;
+
+    &--small {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    &--large {
+        width: 52px;
+        height: 52px;
+        font-size: 18px;
+    }
+}

@@ -26,7 +26,7 @@ export function useCreateForm() {
 
     const { id } = await createParty(partyName);
     if (id) {
-      navigate(`/join?partyId=${id}`);
+      navigate(`/join-party/${id}`);
     }
   };
 
