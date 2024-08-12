@@ -1,0 +1,24 @@
+@use '../../../styles/variables' as *;
+
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    display: grid;
+    place-items: center;
+    z-index: 1;
+
+    &__content {
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        border: 1px solid $input-border;
+        box-shadow: 0 0 10px 0 $input-border;
+        background-color: $bg-soft;
+        border-radius: 25px;
+    }
+}
