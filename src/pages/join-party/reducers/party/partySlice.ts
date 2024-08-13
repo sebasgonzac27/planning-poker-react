@@ -8,6 +8,9 @@ interface PartyState {
   userLoggedIn: boolean;
   players: Player[];
   distribution: Distribution | null;
+  revealed: boolean;
+  average: number;
+  totalCount: Record<string, number>;
 }
 
 const initialState: PartyState = {
@@ -16,6 +19,9 @@ const initialState: PartyState = {
   userLoggedIn: false,
   players: [],
   distribution: null,
+  revealed: false,
+  average: 0,
+  totalCount: {},
 };
 
 const partySlice = createSlice({
@@ -37,6 +43,15 @@ const partySlice = createSlice({
     setDistribution(state, action: PayloadAction<Distribution>) {
       state.distribution = action.payload;
     },
+    setRevealed(state, action: PayloadAction<boolean>) {
+      state.revealed = action.payload;
+    },
+    setAverage(state, action: PayloadAction<number>) {
+      state.average = action.payload;
+    },
+    setTotalCount(state, action: PayloadAction<Record<string, number>>) {
+      state.totalCount = action.payload;
+    },
   },
 });
 
@@ -46,6 +61,9 @@ export const {
   setUserLoggedIn,
   setPlayers,
   setDistribution,
+  setRevealed,
+  setAverage,
+  setTotalCount,
 } = partySlice.actions;
 
 export default partySlice.reducer;

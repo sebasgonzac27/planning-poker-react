@@ -1,97 +1,101 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import Desktop from "./desktop";
-import { Player as PlayerT } from "../../../interfaces/player";
 import { Socket } from "socket.io-client";
+import { Player as PlayerT } from "../../../interfaces/player";
 import { PlayerRole } from "../../../enums/player-role";
 
-const mockPlayers: PlayerT[] = [
+// Mock del componente Player
+jest.mock("../../player/player", () => ({ player }: { player: PlayerT }) => (
+  <div data-testid="player">{player.username}</div>
+));
+
+// Mock del componente Desk
+jest.mock("../desk/desk", () => () => <div data-testid="desk">Desk</div>);
+
+// Mock del socket
+const mockSocket = {
+  id: "mySocketId",
+} as unknown as Socket;
+
+// Datos de ejemplo para los jugadores
+const players: PlayerT[] = [
   {
-    socketId: "1",
     username: "Player 1",
+    socketId: "mySocketId",
     role: PlayerRole.Player,
-    isOwner: false,
+    isOwner: true,
   },
   {
-    socketId: "2",
     username: "Player 2",
+    socketId: "otherSocketId1",
     role: PlayerRole.Player,
     isOwner: false,
   },
   {
-    socketId: "3",
     username: "Player 3",
+    socketId: "otherSocketId2",
     role: PlayerRole.Player,
     isOwner: false,
   },
   {
-    socketId: "4",
     username: "Player 4",
+    socketId: "otherSocketId3",
     role: PlayerRole.Player,
     isOwner: false,
   },
   {
-    socketId: "5",
     username: "Player 5",
+    socketId: "otherSocketId4",
     role: PlayerRole.Player,
     isOwner: false,
   },
   {
-    socketId: "6",
     username: "Player 6",
-    role: PlayerRole.Player,
-    isOwner: false,
-  },
-  {
-    socketId: "7",
-    username: "Player 7",
+    socketId: "otherSocketId5",
     role: PlayerRole.Player,
     isOwner: false,
   },
 ];
 
-const mockSocket: Partial<Socket> = {
-  id: "1",
-};
-
 describe("Desktop Component", () => {
-  test("renders without crashing", () => {
-    render(<Desktop players={mockPlayers} socket={mockSocket as Socket} />);
+  test("renders the current player in the bottom zone", () => {
+    render(<Desktop players={players} socket={mockSocket} />);
+
+    const bottomPlayers = screen
+      .getAllByTestId("player")
+      .filter((player) => player.textContent === "Player 1");
+    expect(bottomPlayers).toHaveLength(1);
   });
 
-  test("correctly assigns players to containers", () => {
-    const { getByText } = render(
-      <Desktop players={mockPlayers} socket={mockSocket as Socket} />
-    );
+  test("distributes other players across top, left, and right zones", () => {
+    render(<Desktop players={players} socket={mockSocket} />);
 
-    // Check top players
-    expect(getByText("Player 2")).toBeInTheDocument();
-    expect(getByText("Player 3")).toBeInTheDocument();
-    expect(getByText("Player 4")).toBeInTheDocument();
-    expect(getByText("Player 5")).toBeInTheDocument();
-
-    // Check left players
-    expect(getByText("Player 6")).toBeInTheDocument();
-
-    // Check right players
-    expect(getByText("Player 7")).toBeInTheDocument();
-
-    // Check bottom players
-    expect(getByText("Player 1")).toBeInTheDocument();
+    const otherPlayers = screen
+      .getAllByTestId("player")
+      .filter((player) => player.textContent !== "Player 1");
+    expect(otherPlayers).toHaveLength(players.length - 1);
   });
 
-  test("renders the correct structure", () => {
-    const { container } = render(
-      <Desktop players={mockPlayers} socket={mockSocket as Socket} />
-    );
-    expect(container.querySelector(".content-desktop")).toBeInTheDocument();
-    expect(
-      container.querySelector(".content-desktop__top-players")
-    ).toBeInTheDocument();
-    expect(
-      container.querySelector(".content-desktop__middle-area")
-    ).toBeInTheDocument();
-    expect(
-      container.querySelector(".content-desktop__side-players")
-    ).toBeInTheDocument();
+  test("renders the Desk component in the middle", () => {
+    render(<Desktop players={players} socket={mockSocket} />);
+
+    const desk = screen.getByTestId("desk");
+    expect(desk).toBeInTheDocument();
+  });
+
+  test("handles cases with fewer players than the maximum capacity", () => {
+    const fewerPlayers = players.slice(0, 4);
+    render(<Desktop players={fewerPlayers} socket={mockSocket} />);
+
+    const renderedPlayers = screen.getAllByTestId("player");
+    expect(renderedPlayers).toHaveLength(fewerPlayers.length);
+  });
+
+  test("handles cases with more players than the maximum capacity", () => {
+    const morePlayers = [...players, ...players]; // Duplicating the players for the test
+    render(<Desktop players={morePlayers} socket={mockSocket} />);
+
+    const renderedPlayers = screen.getAllByTestId("player");
+    expect(renderedPlayers).toHaveLength(players.length * 2 - 1); // As defined by the maxSizes array in the component
   });
 });

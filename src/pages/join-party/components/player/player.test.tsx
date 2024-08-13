@@ -2,9 +2,37 @@ import { render } from "@testing-library/react";
 import Player from "./player";
 import { Player as PlayerT } from "../../interfaces/player";
 import { PlayerRole } from "../../enums/player-role";
+import { Provider } from "react-redux";
+import configureMockStore from "redux-mock-store";
+import { RootState } from "../../store/store";
+
+const mockStore = configureMockStore<RootState>();
 
 describe("Player component", () => {
-  it("should render the player's vote if the role is Player", () => {
+  let store: ReturnType<typeof mockStore>;
+
+  beforeEach(() => {
+    store = mockStore({
+      party: {
+        revealed: true,
+        partyId: "1",
+        partyName: "Poker Night",
+        userLoggedIn: false,
+        players: [],
+        distribution: null,
+        average: 0,
+        totalCount: {},
+      },
+      user: {
+        username: "JohnDoe",
+        role: PlayerRole.Player,
+        isOwner: false,
+        vote: null,
+      },
+    });
+  });
+
+  it("should render the player's vote if the role is Player and revealed is true", () => {
     const player: PlayerT = {
       socketId: "1",
       username: "JohnDoe",
@@ -13,9 +41,36 @@ describe("Player component", () => {
       isOwner: false,
     };
 
-    const { getByText } = render(<Player player={player} />);
+    const { getByText } = render(
+      <Provider store={store}>
+        <Player player={player} />
+      </Provider>
+    );
 
     expect(getByText("5")).toBeInTheDocument();
+  });
+
+  it("should not render the player's vote if the role is Player and revealed is false", () => {
+    const player: PlayerT = {
+      socketId: "1",
+      username: "JohnDoe",
+      role: PlayerRole.Player,
+      vote: 5,
+      isOwner: false,
+    };
+
+    store = mockStore({
+      ...store.getState(),
+      party: { ...store.getState().party, revealed: false },
+    });
+
+    const { queryByText } = render(
+      <Provider store={store}>
+        <Player player={player} />
+      </Provider>
+    );
+
+    expect(queryByText("5")).not.toBeInTheDocument();
   });
 
   it("should render the player's initials if the role is Viewer", () => {
@@ -27,7 +82,11 @@ describe("Player component", () => {
       isOwner: false,
     };
 
-    const { getByText } = render(<Player player={player} />);
+    const { getByText } = render(
+      <Provider store={store}>
+        <Player player={player} />
+      </Provider>
+    );
 
     expect(getByText("JA")).toBeInTheDocument();
   });
@@ -41,7 +100,11 @@ describe("Player component", () => {
       isOwner: false,
     };
 
-    const { getByText } = render(<Player player={player} />);
+    const { getByText } = render(
+      <Provider store={store}>
+        <Player player={player} />
+      </Provider>
+    );
 
     expect(getByText("Alice")).toBeInTheDocument();
   });

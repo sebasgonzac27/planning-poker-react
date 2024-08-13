@@ -13,6 +13,9 @@ const initialState: Partial<RootState> = {
     userLoggedIn: false,
     players: [],
     distribution: null,
+    revealed: false,
+    average: 0,
+    totalCount: {},
   },
   user: {
     username: "JohnDoe",

@@ -2,10 +2,13 @@ import styles from "./main.module.scss";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
+  setAverage,
   setDistribution,
   setPartyId,
   setPartyName,
   setPlayers,
+  setRevealed,
+  setTotalCount,
 } from "../../reducers/party/partySlice";
 import Header from "../header/header";
 import NewPlayer from "../new-player/new-player";
@@ -18,6 +21,7 @@ import {
   setUsername,
 } from "../../reducers/user/userSlice";
 import Cards from "../cards/cards";
+import Stats from "../stats/stats";
 
 interface Props {
   partyId: string;
@@ -48,6 +52,12 @@ export default function Main({ partyId }: Props) {
       updatePlayers(players);
     });
 
+    socket.on("reveal-cards", ({ average, votesCount }) => {
+      dispatch(setAverage(average));
+      dispatch(setTotalCount(votesCount));
+      dispatch(setRevealed(true));
+    });
+
     return () => {
       socket.disconnect();
     };
@@ -60,6 +70,7 @@ export default function Main({ partyId }: Props) {
       <NewPlayer />
       <Playground />
       <Cards />
+      <Stats />
     </main>
   );
 }

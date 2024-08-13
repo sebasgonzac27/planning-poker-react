@@ -77,6 +77,9 @@ describe("useSplitPlayers", () => {
         partyName: "Mock Party",
         userLoggedIn: true,
         distribution: null,
+        average: 0,
+        totalCount: {},
+        revealed: false,
       },
       user: {
         username: "John Doe",
@@ -146,6 +149,9 @@ describe("useSplitPlayers", () => {
         partyName: "Mock Party",
         userLoggedIn: true,
         distribution: null,
+        revealed: false,
+        average: 0,
+        totalCount: {},
       },
       user: {
         username: "John Doe",

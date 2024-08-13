@@ -4,6 +4,9 @@ import partyReducer, {
   setUserLoggedIn,
   setPlayers,
   setDistribution,
+  setRevealed,
+  setAverage,
+  setTotalCount,
 } from "./partySlice";
 
 describe("partySlice", () => {
@@ -13,6 +16,9 @@ describe("partySlice", () => {
     userLoggedIn: false,
     players: [],
     distribution: null,
+    revealed: false,
+    average: 0,
+    totalCount: {},
   };
 
   test("should handle setPartyId", () => {
@@ -45,5 +51,23 @@ describe("partySlice", () => {
       name: "test-name",
       values: [],
     });
+  });
+
+  test("should handle setRevealed", () => {
+    const actual = partyReducer(initialState, setRevealed(true));
+    expect(actual.revealed).toEqual(true);
+  });
+
+  test("should handle setAverage", () => {
+    const actual = partyReducer(initialState, setAverage(10));
+    expect(actual.average).toEqual(10);
+  });
+
+  test("should handle setTotalCount", () => {
+    const actual = partyReducer(
+      initialState,
+      setTotalCount({ "test-key": 10 })
+    );
+    expect(actual.totalCount).toEqual({ "test-key": 10 });
   });
 });
