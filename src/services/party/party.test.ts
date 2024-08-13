@@ -1,6 +1,6 @@
 import MockAdapter from "axios-mock-adapter";
 import { api } from "../../utils/axios-instance/axios-instance";
-import { createParty, getAverage } from "./party";
+import { createParty, getAverage, resetParty } from "./party";
 import { handleError } from "../../utils/handle-error/handle-error";
 
 jest.mock("../../utils/handle-error/handle-error");
@@ -44,6 +44,26 @@ describe("Party Service", () => {
 
       expect(handleError).toHaveBeenCalledWith(
         "Ocurrió un error obteniendo el promedio"
+      );
+    });
+  });
+
+  describe("resetParty", () => {
+    it("ok: should reset the party", async () => {
+      const data = { message: "Party reset" };
+      mock.onGet("/party/reset/1").reply(200, data);
+
+      const response = await resetParty("1");
+
+      expect(response).toEqual(data);
+    });
+    it("error: should handle errors", async () => {
+      mock.onGet("/party/reset/1").reply(500);
+
+      await resetParty("1");
+
+      expect(handleError).toHaveBeenCalledWith(
+        "Ocurrió un error reiniciando la partida"
       );
     });
   });

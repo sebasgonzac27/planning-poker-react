@@ -22,3 +22,13 @@ export async function getAverage(roomId: string) {
     handleError("Ocurrió un error obteniendo el promedio");
   }
 }
+
+export async function resetParty(roomId: string) {
+  try {
+    const { data } = await api.get(`/party/reset/${roomId}`);
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    handleError("Ocurrió un error reiniciando la partida");
+  }
+}
