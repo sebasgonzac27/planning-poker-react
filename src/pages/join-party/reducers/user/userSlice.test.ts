@@ -1,4 +1,9 @@
-import userReducer, { setUsername, setRole, setIsOwner } from "./userSlice";
+import userReducer, {
+  setUsername,
+  setRole,
+  setIsOwner,
+  setVote,
+} from "./userSlice";
 import { PlayerRole } from "../../enums/player-role";
 
 describe("userSlice", () => {
@@ -6,6 +11,7 @@ describe("userSlice", () => {
     username: "",
     role: PlayerRole.Player,
     isOwner: false,
+    vote: null,
   };
 
   test("should handle setUsername", () => {
@@ -21,5 +27,10 @@ describe("userSlice", () => {
   test("should handle setIsOwner", () => {
     const actual = userReducer(initialState, setIsOwner(true));
     expect(actual.isOwner).toEqual(true);
+  });
+
+  test("should handle setVote", () => {
+    const actual = userReducer(initialState, setVote("test-vote"));
+    expect(actual.vote).toEqual("test-vote");
   });
 });
