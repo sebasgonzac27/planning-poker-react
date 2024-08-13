@@ -4,6 +4,7 @@ import { Socket } from "socket.io-client";
 import { Player as PlayerT } from "../../../interfaces/player";
 
 import Player from "../../player/player";
+import Actions from "../actions/actions";
 
 interface Props {
   players: PlayerT[];
@@ -25,6 +26,7 @@ export default function Mobile({ players, socket }: Props) {
         <div className={styles["content-mobile__my-player"]}>
           {myPlayer && <Player player={myPlayer} />}
         </div>
+        <Actions />
       </section>
     </>
   );
