@@ -45,6 +45,7 @@ export default function NewPlayer() {
                 />
               </RadioGroup>
               <Button
+                data-testid="continue-button"
                 text="Continuar"
                 variant="primary"
                 disabled={errors.length > 0 || !name}
