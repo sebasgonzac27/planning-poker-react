@@ -2,6 +2,7 @@ import partyReducer, {
   setPartyId,
   setPartyName,
   setUserLoggedIn,
+  setPlayers,
 } from "./partySlice";
 
 describe("partySlice", () => {
@@ -9,6 +10,7 @@ describe("partySlice", () => {
     partyId: "",
     partyName: "",
     userLoggedIn: false,
+    players: [],
   };
 
   test("should handle setPartyId", () => {
@@ -24,5 +26,10 @@ describe("partySlice", () => {
   test("should handle setUserLoggedIn", () => {
     const actual = partyReducer(initialState, setUserLoggedIn(true));
     expect(actual.userLoggedIn).toEqual(true);
+  });
+
+  test("should handle setPlayers", () => {
+    const actual = partyReducer(initialState, setPlayers([]));
+    expect(actual.players).toEqual([]);
   });
 });
