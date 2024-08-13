@@ -97,7 +97,11 @@ describe("NewPlayer Component", () => {
   });
 
   it("form: calls handleSubmit when the form is submitted", () => {
-    const handleSubmitMock = jest.fn();
+    const handleSubmitMock = jest.fn((e) => e.preventDefault());
+
+    store = mockStore({
+      party: { userLoggedIn: false },
+    });
 
     mockUsePlayerForm.mockReturnValue({
       name: "Player",
@@ -114,10 +118,11 @@ describe("NewPlayer Component", () => {
       </Provider>
     );
 
-    const continueButton = screen.getByText(/Continuar/i);
+    const continueButton = screen.getByTestId("continue-button");
 
     expect(continueButton).not.toBeDisabled();
     fireEvent.click(continueButton);
+
     expect(handleSubmitMock).toHaveBeenCalled();
   });
 });

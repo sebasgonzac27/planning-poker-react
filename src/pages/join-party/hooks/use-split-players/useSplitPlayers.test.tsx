@@ -76,11 +76,13 @@ describe("useSplitPlayers", () => {
         partyId: "mock-party-id",
         partyName: "Mock Party",
         userLoggedIn: true,
+        distribution: null,
       },
       user: {
         username: "John Doe",
         role: PlayerRole.Player,
         isOwner: false,
+        vote: null,
       },
     });
 
@@ -143,11 +145,13 @@ describe("useSplitPlayers", () => {
         partyId: "mock-party-id",
         partyName: "Mock Party",
         userLoggedIn: true,
+        distribution: null,
       },
       user: {
         username: "John Doe",
         role: PlayerRole.Player,
         isOwner: false,
+        vote: null,
       },
     });
 

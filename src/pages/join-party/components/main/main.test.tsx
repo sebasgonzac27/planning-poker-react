@@ -4,6 +4,7 @@ import {
   setPartyId,
   setPartyName,
   setPlayers,
+  setDistribution, // Asegúrate de importar setDistribution
 } from "../../reducers/party/partySlice";
 import Main from "./main";
 import { socket } from "../../../../utils/socket-instance/socket-instance";
@@ -23,6 +24,7 @@ jest.mock("../../reducers/party/partySlice", () => ({
   setPartyId: jest.fn(),
   setPartyName: jest.fn(),
   setPlayers: jest.fn(),
+  setDistribution: jest.fn(), // Mockear setDistribution
 }));
 
 jest.mock("../../reducers/user/userSlice", () => ({
@@ -38,6 +40,7 @@ jest.mock("../new-player/new-player", () => () => (
 jest.mock("../playground/playground", () => () => (
   <div>Playground Component</div>
 ));
+jest.mock("../cards/cards", () => () => <div>Cards Component</div>);
 jest.mock("../../../../utils/socket-instance/socket-instance", () => ({
   socket: {
     disconnect: jest.fn(),
@@ -69,16 +72,20 @@ describe("Main", () => {
     expect(socket.disconnect).toHaveBeenCalled();
   });
 
-  test("renders Header, NewPlayer, and Playground components", () => {
+  test("renders all components", () => {
     const { getByText } = render(<Main partyId={partyId} />);
     expect(getByText("Header Component")).toBeInTheDocument();
     expect(getByText("New Player Component")).toBeInTheDocument();
     expect(getByText("Playground Component")).toBeInTheDocument();
+    expect(getByText("Cards Component")).toBeInTheDocument();
   });
 
-  test("dispatches setPartyName and setPlayers on join-party event", () => {
+  test("dispatches setPartyName, setDistribution, and setPlayers on join-party event", () => {
     render(<Main partyId={partyId} />);
-    const party = { name: "Test Party" };
+    const party = {
+      name: "Test Party",
+      distribution: { id: "test", name: "test", values: [] },
+    };
     const players: Player[] = [
       {
         socketId: "test-socket-id",
@@ -91,6 +98,9 @@ describe("Main", () => {
     joinPartyCallback({ party, players });
 
     expect(mockDispatch).toHaveBeenCalledWith(setPartyName(party.name));
+    expect(mockDispatch).toHaveBeenCalledWith(
+      setDistribution(party.distribution)
+    );
     expect(mockDispatch).toHaveBeenCalledWith(setPlayers(players));
   });
 
