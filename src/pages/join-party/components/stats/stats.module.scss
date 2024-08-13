@@ -1,0 +1,35 @@
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  margin-top: 20px;
+
+  &__result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__average {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+}
+
+.average {
+  &__title {
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin: 0;
+  }
+
+  &__value {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+}
