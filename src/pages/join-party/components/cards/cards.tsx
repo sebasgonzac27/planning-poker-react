@@ -9,7 +9,7 @@ import { socket } from "../../../../utils/socket-instance/socket-instance";
 
 export default function Cards() {
   const { role, vote } = useSelector((state: RootState) => state.user);
-  const { partyId, distribution } = useSelector(
+  const { partyId, distribution, revealed } = useSelector(
     (state: RootState) => state.party
   );
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ export default function Cards() {
 
   return (
     <>
-      {role === PlayerRole.Player && (
+      {!revealed && role === PlayerRole.Player && (
         <div className={styles.cards}>
           <h3 className={styles.cards__title}>Elige una carta 👇</h3>
           <div className={styles.cards__container}>
