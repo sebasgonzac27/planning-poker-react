@@ -99,6 +99,10 @@ describe("NewPlayer Component", () => {
   it("form: calls handleSubmit when the form is submitted", () => {
     const handleSubmitMock = jest.fn();
 
+    store = mockStore({
+      party: { userLoggedIn: false },
+    });
+
     mockUsePlayerForm.mockReturnValue({
       name: "Player",
       errors: [],
@@ -114,9 +118,12 @@ describe("NewPlayer Component", () => {
       </Provider>
     );
 
+    console.log(store.getState());
+
     const continueButton = screen.getByText(/Continuar/i);
 
     expect(continueButton).not.toBeDisabled();
+    // console.log(continueButton);
     fireEvent.click(continueButton);
     expect(handleSubmitMock).toHaveBeenCalled();
   });
