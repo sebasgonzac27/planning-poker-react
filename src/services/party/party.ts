@@ -1,13 +1,24 @@
-import { api } from "../../utils/axios-instance/axios-instance"
-import { handleError } from "../../utils/handle-error/handle-error"
+import { api } from "../../utils/axios-instance/axios-instance";
+import { handleError } from "../../utils/handle-error/handle-error";
 
-export async function createParty (name: string) {
+export async function createParty(name: string) {
   try {
-    const { data } = await api.post('/party', {
-      name
-    })
-    return data
+    const { data } = await api.post("/party", {
+      name,
+    });
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    handleError('Ocurrió un error creando la partida')
+    handleError("Ocurrió un error creando la partida");
+  }
+}
+
+export async function getAverage(roomId: string) {
+  try {
+    const { data } = await api.get(`/party/average/${roomId}`);
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    handleError("Ocurrió un error obteniendo el promedio");
   }
 }
