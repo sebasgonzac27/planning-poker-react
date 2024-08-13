@@ -19,6 +19,7 @@ import {
   setIsOwner,
   setRole,
   setUsername,
+  setVote,
 } from "../../reducers/user/userSlice";
 import Cards from "../cards/cards";
 import Stats from "../stats/stats";
@@ -56,6 +57,13 @@ export default function Main({ partyId }: Props) {
       dispatch(setAverage(average));
       dispatch(setTotalCount(votesCount));
       dispatch(setRevealed(true));
+    });
+
+    socket.on("reset-party", ({ players }) => {
+      updatePlayers(players);
+      dispatch(setVote(null));
+      dispatch(setAverage(0));
+      dispatch(setRevealed(false));
     });
 
     return () => {
