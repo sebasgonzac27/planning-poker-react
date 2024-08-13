@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Player } from "../../interfaces/player";
+import { Distribution } from "../../interfaces/distribution";
 
 interface PartyState {
   partyId: string;
   partyName: string;
   userLoggedIn: boolean;
   players: Player[];
+  distribution: Distribution | null;
 }
 
 const initialState: PartyState = {
@@ -13,6 +15,7 @@ const initialState: PartyState = {
   partyName: "",
   userLoggedIn: false,
   players: [],
+  distribution: null,
 };
 
 const partySlice = createSlice({
@@ -31,10 +34,18 @@ const partySlice = createSlice({
     setPlayers(state, action: PayloadAction<Player[]>) {
       state.players = action.payload;
     },
+    setDistribution(state, action: PayloadAction<Distribution>) {
+      state.distribution = action.payload;
+    },
   },
 });
 
-export const { setPartyId, setPartyName, setUserLoggedIn, setPlayers } =
-  partySlice.actions;
+export const {
+  setPartyId,
+  setPartyName,
+  setUserLoggedIn,
+  setPlayers,
+  setDistribution,
+} = partySlice.actions;
 
 export default partySlice.reducer;

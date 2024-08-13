@@ -3,6 +3,7 @@ import partyReducer, {
   setPartyName,
   setUserLoggedIn,
   setPlayers,
+  setDistribution,
 } from "./partySlice";
 
 describe("partySlice", () => {
@@ -11,6 +12,7 @@ describe("partySlice", () => {
     partyName: "",
     userLoggedIn: false,
     players: [],
+    distribution: null,
   };
 
   test("should handle setPartyId", () => {
@@ -31,5 +33,17 @@ describe("partySlice", () => {
   test("should handle setPlayers", () => {
     const actual = partyReducer(initialState, setPlayers([]));
     expect(actual.players).toEqual([]);
+  });
+
+  test("should handle setDistribution", () => {
+    const actual = partyReducer(
+      initialState,
+      setDistribution({ id: "test-id", name: "test-name", values: [] })
+    );
+    expect(actual.distribution).toEqual({
+      id: "test-id",
+      name: "test-name",
+      values: [],
+    });
   });
 });
