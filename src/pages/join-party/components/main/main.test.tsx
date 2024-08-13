@@ -4,7 +4,7 @@ import {
   setPartyId,
   setPartyName,
   setPlayers,
-  setDistribution, // Asegúrate de importar setDistribution
+  setDistribution,
 } from "../../reducers/party/partySlice";
 import Main from "./main";
 import { socket } from "../../../../utils/socket-instance/socket-instance";
@@ -24,7 +24,7 @@ jest.mock("../../reducers/party/partySlice", () => ({
   setPartyId: jest.fn(),
   setPartyName: jest.fn(),
   setPlayers: jest.fn(),
-  setDistribution: jest.fn(), // Mockear setDistribution
+  setDistribution: jest.fn(),
 }));
 
 jest.mock("../../reducers/user/userSlice", () => ({
@@ -41,6 +41,7 @@ jest.mock("../playground/playground", () => () => (
   <div>Playground Component</div>
 ));
 jest.mock("../cards/cards", () => () => <div>Cards Component</div>);
+jest.mock("../stats/stats", () => () => <div>Stats Component</div>);
 jest.mock("../../../../utils/socket-instance/socket-instance", () => ({
   socket: {
     disconnect: jest.fn(),
