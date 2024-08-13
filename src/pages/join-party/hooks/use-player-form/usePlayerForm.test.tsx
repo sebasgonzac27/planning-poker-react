@@ -16,8 +16,14 @@ const initialState: Partial<RootState> = {
     partyId: "",
     userLoggedIn: false,
     players: [],
+    distribution: null,
   },
-  user: { username: "JohnDoe", role: PlayerRole.Player, isOwner: false },
+  user: {
+    username: "JohnDoe",
+    role: PlayerRole.Player,
+    isOwner: false,
+    vote: null,
+  },
 };
 
 const validateInputMock = validateInput as jest.Mock;
