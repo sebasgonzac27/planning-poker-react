@@ -38,6 +38,7 @@ jest.mock("../new-player/new-player", () => () => (
 jest.mock("../playground/playground", () => () => (
   <div>Playground Component</div>
 ));
+jest.mock("../cards/cards", () => () => <div>Cards Component</div>);
 jest.mock("../../../../utils/socket-instance/socket-instance", () => ({
   socket: {
     disconnect: jest.fn(),
@@ -69,11 +70,12 @@ describe("Main", () => {
     expect(socket.disconnect).toHaveBeenCalled();
   });
 
-  test("renders Header, NewPlayer, and Playground components", () => {
+  test("renders all components", () => {
     const { getByText } = render(<Main partyId={partyId} />);
     expect(getByText("Header Component")).toBeInTheDocument();
     expect(getByText("New Player Component")).toBeInTheDocument();
     expect(getByText("Playground Component")).toBeInTheDocument();
+    expect(getByText("Cards Component")).toBeInTheDocument();
   });
 
   test("dispatches setPartyName and setPlayers on join-party event", () => {

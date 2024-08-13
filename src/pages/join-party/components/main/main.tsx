@@ -2,6 +2,7 @@ import styles from "./main.module.scss";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
+  setDistribution,
   setPartyId,
   setPartyName,
   setPlayers,
@@ -16,6 +17,7 @@ import {
   setRole,
   setUsername,
 } from "../../reducers/user/userSlice";
+import Cards from "../cards/cards";
 
 interface Props {
   partyId: string;
@@ -38,6 +40,11 @@ export default function Main({ partyId }: Props) {
 
     socket.on("join-party", ({ party, players }) => {
       dispatch(setPartyName(party.name));
+      dispatch(setDistribution(party.distribution));
+      updatePlayers(players);
+    });
+
+    socket.on("update-players", ({ players }) => {
       updatePlayers(players);
     });
 
@@ -52,6 +59,7 @@ export default function Main({ partyId }: Props) {
       <Header />
       <NewPlayer />
       <Playground />
+      <Cards />
     </main>
   );
 }
