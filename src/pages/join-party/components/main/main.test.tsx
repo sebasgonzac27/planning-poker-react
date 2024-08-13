@@ -1,8 +1,19 @@
 import { render } from "@testing-library/react";
 import { useDispatch } from "react-redux";
-import { setPartyId } from "../../reducers/party/partySlice";
+import {
+  setPartyId,
+  setPartyName,
+  setPlayers,
+} from "../../reducers/party/partySlice";
 import Main from "./main";
 import { socket } from "../../../../utils/socket-instance/socket-instance";
+import { Player } from "../../interfaces/player";
+import {
+  setIsOwner,
+  setRole,
+  setUsername,
+} from "../../reducers/user/userSlice";
+import { PlayerRole } from "../../enums/player-role";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
@@ -10,15 +21,28 @@ jest.mock("react-redux", () => ({
 
 jest.mock("../../reducers/party/partySlice", () => ({
   setPartyId: jest.fn(),
+  setPartyName: jest.fn(),
+  setPlayers: jest.fn(),
+}));
+
+jest.mock("../../reducers/user/userSlice", () => ({
+  setIsOwner: jest.fn(),
+  setRole: jest.fn(),
+  setUsername: jest.fn(),
 }));
 
 jest.mock("../header/header", () => () => <div>Header Component</div>);
 jest.mock("../new-player/new-player", () => () => (
   <div>New Player Component</div>
 ));
+jest.mock("../playground/playground", () => () => (
+  <div>Playground Component</div>
+));
 jest.mock("../../../../utils/socket-instance/socket-instance", () => ({
   socket: {
     disconnect: jest.fn(),
+    on: jest.fn(),
+    id: "test-socket-id",
   },
 }));
 
@@ -45,9 +69,46 @@ describe("Main", () => {
     expect(socket.disconnect).toHaveBeenCalled();
   });
 
-  test("renders Header and NewPlayer components", () => {
+  test("renders Header, NewPlayer, and Playground components", () => {
     const { getByText } = render(<Main partyId={partyId} />);
     expect(getByText("Header Component")).toBeInTheDocument();
     expect(getByText("New Player Component")).toBeInTheDocument();
+    expect(getByText("Playground Component")).toBeInTheDocument();
+  });
+
+  test("dispatches setPartyName and setPlayers on join-party event", () => {
+    render(<Main partyId={partyId} />);
+    const party = { name: "Test Party" };
+    const players: Player[] = [
+      {
+        socketId: "test-socket-id",
+        username: "test-user",
+        role: PlayerRole.Player,
+        isOwner: true,
+      },
+    ];
+    const joinPartyCallback = (socket.on as jest.Mock).mock.calls[0][1];
+    joinPartyCallback({ party, players });
+
+    expect(mockDispatch).toHaveBeenCalledWith(setPartyName(party.name));
+    expect(mockDispatch).toHaveBeenCalledWith(setPlayers(players));
+  });
+
+  test("dispatches setUsername, setRole, and setIsOwner for the current player", () => {
+    render(<Main partyId={partyId} />);
+    const players: Player[] = [
+      {
+        socketId: "test-socket-id",
+        username: "test-user",
+        role: PlayerRole.Player,
+        isOwner: true,
+      },
+    ];
+    const joinPartyCallback = (socket.on as jest.Mock).mock.calls[0][1];
+    joinPartyCallback({ party: { name: "Test Party" }, players });
+
+    expect(mockDispatch).toHaveBeenCalledWith(setUsername("test-user"));
+    expect(mockDispatch).toHaveBeenCalledWith(setRole(PlayerRole.Player));
+    expect(mockDispatch).toHaveBeenCalledWith(setIsOwner(true));
   });
 });
