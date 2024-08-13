@@ -11,7 +11,12 @@ import { handleError } from "../../../../utils/handle-error/handle-error";
 
 const mockStore = configureStore([]);
 const initialState: Partial<RootState> = {
-  party: { partyName: "Poker Night", partyId: "", userLoggedIn: false },
+  party: {
+    partyName: "Poker Night",
+    partyId: "",
+    userLoggedIn: false,
+    players: [],
+  },
   user: { username: "JohnDoe", role: PlayerRole.Player, isOwner: false },
 };
 
