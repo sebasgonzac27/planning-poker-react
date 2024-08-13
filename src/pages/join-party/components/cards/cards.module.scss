@@ -1,0 +1,48 @@
+.cards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+
+  &__title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  &__card {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cards {
+
+    &__title  {
+      font-size: 1rem;
+    }
+
+    &__container {
+      justify-content: flex-start;
+      width: 100vw;
+      padding-inline: 20px;
+      overflow-y: auto;
+    }
+
+    &__card:hover {
+      transform: translateY(0);
+    }
+  }
+}
