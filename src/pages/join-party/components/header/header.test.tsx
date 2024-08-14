@@ -2,35 +2,17 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import Header from "./header";
-import { RootState } from "../../store/store";
-import { PlayerRole } from "../../enums/player-role";
 
 const mockStore = configureStore([]);
-const initialState: Partial<RootState> = {
-  party: {
-    partyName: "Poker Night",
-    partyId: "",
-    userLoggedIn: false,
-    players: [],
-    distribution: null,
-    revealed: false,
-    average: 0,
-    totalCount: {},
-    inviteModal: false,
-  },
-  user: {
-    username: "JohnDoe",
-    role: PlayerRole.Player,
-    isOwner: false,
-    vote: null,
-  },
-};
 
 describe("Header Component", () => {
   let store: ReturnType<typeof mockStore>;
 
   beforeEach(() => {
-    store = mockStore(initialState);
+    store = mockStore({
+      user: { username: "John Doe" },
+      party: { partyName: "Poker Night" },
+    });
   });
 
   it("renders the header with the logo, title, and avatar initials", () => {
@@ -62,11 +44,10 @@ describe("Header Component", () => {
   });
 
   it("renders default initials if username is not provided", () => {
-    const modifiedState = {
-      ...initialState,
+    store = mockStore({
       user: { username: "" },
-    };
-    store = mockStore(modifiedState);
+      party: { partyName: "Poker Night" },
+    });
 
     render(
       <Provider store={store}>
