@@ -12,6 +12,7 @@ interface PartyState {
   average: number;
   totalCount: Record<string, number>;
   inviteModal: boolean;
+  menuModal: boolean;
 }
 
 const initialState: PartyState = {
@@ -24,6 +25,7 @@ const initialState: PartyState = {
   average: 0,
   totalCount: {},
   inviteModal: false,
+  menuModal: false,
 };
 
 const partySlice = createSlice({
@@ -57,6 +59,9 @@ const partySlice = createSlice({
     setInviteModal(state, action: PayloadAction<boolean>) {
       state.inviteModal = action.payload;
     },
+    setMenuModal(state, action: PayloadAction<boolean>) {
+      state.menuModal = action.payload;
+    },
   },
 });
 
@@ -70,6 +75,7 @@ export const {
   setAverage,
   setTotalCount,
   setInviteModal,
+  setMenuModal,
 } = partySlice.actions;
 
 export default partySlice.reducer;

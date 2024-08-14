@@ -20,6 +20,7 @@ describe("partySlice", () => {
     average: 0,
     totalCount: {},
     inviteModal: false,
+    menuModal: false,
   };
 
   test("should handle setPartyId", () => {
