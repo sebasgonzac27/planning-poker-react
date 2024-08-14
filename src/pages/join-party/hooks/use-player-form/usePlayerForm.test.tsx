@@ -20,6 +20,7 @@ const initialState: Partial<RootState> = {
     revealed: false,
     average: 0,
     totalCount: {},
+    inviteModal: false,
   },
   user: {
     username: "JohnDoe",
