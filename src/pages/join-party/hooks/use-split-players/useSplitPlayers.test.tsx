@@ -80,6 +80,7 @@ describe("useSplitPlayers", () => {
         average: 0,
         totalCount: {},
         revealed: false,
+        inviteModal: false,
       },
       user: {
         username: "John Doe",
@@ -152,6 +153,7 @@ describe("useSplitPlayers", () => {
         revealed: false,
         average: 0,
         totalCount: {},
+        inviteModal: false,
       },
       user: {
         username: "John Doe",
