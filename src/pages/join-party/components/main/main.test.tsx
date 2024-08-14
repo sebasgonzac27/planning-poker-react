@@ -43,6 +43,7 @@ jest.mock("../playground/playground", () => () => (
 jest.mock("../cards/cards", () => () => <div>Cards Component</div>);
 jest.mock("../stats/stats", () => () => <div>Stats Component</div>);
 jest.mock("../invite/invite", () => () => <div>Invite Component</div>);
+jest.mock("../menu/menu", () => () => <div>Menu Component</div>);
 
 jest.mock("../../../../utils/socket-instance/socket-instance", () => ({
   socket: {
