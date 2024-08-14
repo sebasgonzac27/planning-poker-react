@@ -1,12 +1,18 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Avatar from "../../../../design-system/atoms/avatar/avatar.atom";
 import Button from "../../../../design-system/atoms/button/button.atom";
 import { RootState } from "../../store/store";
 import styles from "./header.module.scss";
+import { setInviteModal } from "../../reducers/party/partySlice";
 
 export default function Header() {
   const { partyName } = useSelector((state: RootState) => state.party);
   const { username } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(setInviteModal(true));
+  };
 
   return (
     <header className={styles.header}>
@@ -28,6 +34,7 @@ export default function Header() {
           className={styles.header__button}
           text="Invitar jugadores"
           variant="secondary"
+          onClick={handleClick}
         />
       </div>
     </header>
