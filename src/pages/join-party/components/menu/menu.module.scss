@@ -1,0 +1,46 @@
+@use '../../../../styles/variables' as *;
+
+.menu {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: .5rem 2rem;
+    background-color: $btn-bg-tertiary;
+  }
+
+  &__title {
+    font-size: 1.3rem;
+    color: $color;
+  }
+
+  &__close {
+    background-color: transparent;
+    border: none;
+    color: $color;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: grid;
+    place-items: center;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: clamp(15rem, 80vw, 35rem);
+    height: 100%;
+    padding: 50px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+  }
+}

@@ -3,7 +3,7 @@ import Avatar from "../../../../design-system/atoms/avatar/avatar.atom";
 import Button from "../../../../design-system/atoms/button/button.atom";
 import { RootState } from "../../store/store";
 import styles from "./header.module.scss";
-import { setInviteModal } from "../../reducers/party/partySlice";
+import { setInviteModal, setMenuModal } from "../../reducers/party/partySlice";
 
 export default function Header() {
   const { partyName } = useSelector((state: RootState) => state.party);
@@ -12,6 +12,10 @@ export default function Header() {
 
   const handleClick = () => {
     dispatch(setInviteModal(true));
+  };
+
+  const handleMenu = () => {
+    dispatch(setMenuModal(true));
   };
 
   return (
@@ -29,6 +33,7 @@ export default function Header() {
           className={styles.header__avatar}
           variant="small"
           initials={username.slice(0, 2) || "PR"}
+          onClick={handleMenu}
         />
         <Button
           className={styles.header__button}

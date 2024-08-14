@@ -1,4 +1,3 @@
-import { RootState } from "../../store/store";
 import { PlayerRole } from "../../enums/player-role";
 import configureStore from "redux-mock-store";
 import usePlayerForm from "./usePlayerForm";
@@ -10,25 +9,6 @@ import { socket } from "../../../../utils/socket-instance/socket-instance";
 import { handleError } from "../../../../utils/handle-error/handle-error";
 
 const mockStore = configureStore([]);
-const initialState: Partial<RootState> = {
-  party: {
-    partyName: "Poker Night",
-    partyId: "",
-    userLoggedIn: false,
-    players: [],
-    distribution: null,
-    revealed: false,
-    average: 0,
-    totalCount: {},
-    inviteModal: false,
-  },
-  user: {
-    username: "JohnDoe",
-    role: PlayerRole.Player,
-    isOwner: false,
-    vote: null,
-  },
-};
 
 const validateInputMock = validateInput as jest.Mock;
 
@@ -42,7 +22,9 @@ describe("usePlayerForm", () => {
   let store: ReturnType<typeof mockStore>;
 
   beforeEach(() => {
-    store = mockStore(initialState);
+    store = mockStore({
+      party: { partyId: "123" },
+    });
     jest.clearAllMocks();
   });
 
@@ -156,7 +138,7 @@ describe("usePlayerForm", () => {
 
     expect(socket.emit).toHaveBeenCalledTimes(1);
     expect(socket.emit).toHaveBeenCalledWith("join-party", {
-      partyId: initialState.party!.partyId,
+      partyId: "123",
       name: "JohnDoe",
       role: PlayerRole.Player,
     });

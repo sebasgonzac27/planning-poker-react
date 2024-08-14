@@ -4,9 +4,8 @@ import { Player as PlayerT } from "../../interfaces/player";
 import { PlayerRole } from "../../enums/player-role";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
-import { RootState } from "../../store/store";
 
-const mockStore = configureMockStore<RootState>();
+const mockStore = configureMockStore([]);
 
 describe("Player component", () => {
   let store: ReturnType<typeof mockStore>;
@@ -61,8 +60,8 @@ describe("Player component", () => {
     };
 
     store = mockStore({
-      ...store.getState(),
-      party: { ...store.getState().party, revealed: false },
+      ...store,
+      party: { revealed: false },
     });
 
     const { queryByText } = render(

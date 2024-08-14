@@ -1,7 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
-import { RootState } from "../../store/store";
 import { Player } from "../../interfaces/player";
 import useSplitPlayers from "./useSplitPlayers";
 import { ReactNode } from "react";
@@ -10,12 +9,11 @@ jest.mock("../../../../utils/socket-instance/socket-instance", () => ({
   socket: { id: "mock-socket-id" },
 }));
 
-const mockStore = configureMockStore<RootState>();
+const mockStore = configureMockStore([]);
 
-import { Store } from "redux";
 import { PlayerRole } from "../../enums/player-role";
 
-const renderHookWithStore = (store: Store<RootState>) => {
+const renderHookWithStore = (store: ReturnType<typeof mockStore>) => {
   return renderHook(() => useSplitPlayers(), {
     wrapper: ({ children }: { children: ReactNode }) => (
       <Provider store={store}>{children}</Provider>

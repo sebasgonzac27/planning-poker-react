@@ -24,6 +24,7 @@ import {
 import Cards from "../cards/cards";
 import Stats from "../stats/stats";
 import Invite from "../invite/invite";
+import Menu from "../menu/menu";
 
 interface Props {
   partyId: string;
@@ -81,6 +82,7 @@ export default function Main({ partyId }: Props) {
       <Cards />
       <Stats />
       <Invite />
+      <Menu />
     </main>
   );
 }
