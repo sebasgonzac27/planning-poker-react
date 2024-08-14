@@ -22,6 +22,7 @@ describe("Player component", () => {
         distribution: null,
         average: 0,
         totalCount: {},
+        inviteModal: false,
       },
       user: {
         username: "JohnDoe",
