@@ -23,6 +23,7 @@ import {
 } from "../../reducers/user/userSlice";
 import Cards from "../cards/cards";
 import Stats from "../stats/stats";
+import Invite from "../invite/invite";
 
 interface Props {
   partyId: string;
@@ -79,6 +80,7 @@ export default function Main({ partyId }: Props) {
       <Playground />
       <Cards />
       <Stats />
+      <Invite />
     </main>
   );
 }
