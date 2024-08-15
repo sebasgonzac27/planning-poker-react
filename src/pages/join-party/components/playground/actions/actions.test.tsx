@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useSelector } from "react-redux";
 import Actions from "./actions";
-import { getAverage } from "../../../../../services/party/party";
+import { getAverage, resetParty } from "../../../../../services/party/party";
 
 // Mock useSelector
 jest.mock("react-redux", () => ({
@@ -11,6 +11,7 @@ jest.mock("react-redux", () => ({
 // Mock getAverage
 jest.mock("../../../../../services/party/party", () => ({
   getAverage: jest.fn(),
+  resetParty: jest.fn(),
 }));
 
 describe("Actions Component", () => {
@@ -70,5 +71,14 @@ describe("Actions Component", () => {
     const button = screen.getByText("Revelar cartas");
     fireEvent.click(button);
     expect(getAverage).toHaveBeenCalledWith("123");
+  });
+
+  test("calls handleReset on button click", async () => {
+    mockState.party.revealed = true;
+    mockState.user.isOwner = true;
+    render(<Actions />);
+    const button = screen.getByText("Nueva votación");
+    fireEvent.click(button);
+    expect(resetParty).toHaveBeenCalledWith("123");
   });
 });
