@@ -5,9 +5,14 @@ import Menu from "./menu";
 import { setMenuModal } from "../../reducers/party/partySlice";
 import { toggleRole } from "../../../../services/user/user";
 import { PlayerRole } from "../../enums/player-role";
+import { toggleAdmin } from "../../../../services/party/party";
 
 jest.mock("../../../../services/user/user", () => ({
   toggleRole: jest.fn(),
+}));
+
+jest.mock("../../../../services/party/party", () => ({
+  toggleAdmin: jest.fn(),
 }));
 
 jest.mock("../../reducers/party/partySlice", () => ({
@@ -96,22 +101,15 @@ describe("Menu Component", () => {
     fireEvent.change($select, { target: { value: "viewer" } });
 
     expect($select).toHaveValue("viewer");
-  });
 
-  it("form: should call toggleRole and handleCloseModal on form submit when role changes", async () => {
-    render(
-      <Provider store={store}>
-        <Menu />
-      </Provider>
-    );
+    const $button = screen.getByText("Guardar");
+    fireEvent.click($button);
 
-    const $select = screen.getByTestId("role-select");
-    fireEvent.change($select, { target: { value: "viewer" } });
-
-    const $formButton = screen.getByText("Guardar");
-    fireEvent.click($formButton);
-
-    expect(toggleRole).toHaveBeenCalledTimes(1);
+    expect(toggleRole).toHaveBeenCalledWith({
+      role: "viewer",
+      roomId: "room123",
+      userId: "socket123",
+    });
   });
 
   it("form: should not call toggleRole on form submit when role does not change", async () => {
@@ -126,5 +124,56 @@ describe("Menu Component", () => {
 
     expect(toggleRole).not.toHaveBeenCalled();
     expect(dispatch).toHaveBeenCalledWith(setMenuModal(false));
+  });
+
+  // Admin
+  it("admin: render admin select when user is owner", () => {
+    store = mockStore({
+      party: {
+        menuModal: true,
+        partyId: "room123",
+        players: [{ socketId: "1", username: "Test-1", isOwner: false }],
+      },
+      user: { isOwner: true },
+    });
+
+    render(
+      <Provider store={store}>
+        <Menu />
+      </Provider>
+    );
+
+    const $adminSelect = screen.getByTestId("admin-select");
+    expect($adminSelect).toBeInTheDocument();
+  });
+
+  it("admin: should change the selected admin when the select changes", () => {
+    store = mockStore({
+      party: {
+        menuModal: true,
+        partyId: "room123",
+        players: [
+          { socketId: "socket123", username: "Test-1", isOwner: true },
+          { socketId: "socket321", username: "Test-2", isOwner: false },
+        ],
+      },
+      user: { isOwner: true },
+    });
+
+    render(
+      <Provider store={store}>
+        <Menu />
+      </Provider>
+    );
+
+    const $select = screen.getByTestId("admin-select");
+    fireEvent.change($select, { target: { value: "socket321" } });
+
+    expect($select).toHaveValue("socket321");
+
+    const $button = screen.getByText("Guardar");
+    fireEvent.click($button);
+
+    expect(toggleAdmin).toHaveBeenCalledWith("room123", "socket321");
   });
 });
