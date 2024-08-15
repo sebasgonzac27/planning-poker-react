@@ -32,3 +32,16 @@ export async function resetParty(roomId: string) {
     handleError("Ocurrió un error reiniciando la partida");
   }
 }
+
+export async function toggleAdmin(roomId: string, userId: string) {
+  try {
+    const { data } = await api.put("/party/toggle-admin", {
+      roomId,
+      userId,
+    });
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    handleError("Ocurrió un error cambiando el admin");
+  }
+}

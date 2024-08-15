@@ -1,6 +1,6 @@
 import MockAdapter from "axios-mock-adapter";
 import { api } from "../../utils/axios-instance/axios-instance";
-import { createParty, getAverage, resetParty } from "./party";
+import { createParty, getAverage, resetParty, toggleAdmin } from "./party";
 import { handleError } from "../../utils/handle-error/handle-error";
 
 jest.mock("../../utils/handle-error/handle-error");
@@ -64,6 +64,27 @@ describe("Party Service", () => {
 
       expect(handleError).toHaveBeenCalledWith(
         "Ocurrió un error reiniciando la partida"
+      );
+    });
+  });
+
+  describe("toggleAdmin", () => {
+    it("ok: should toggle the admin", async () => {
+      const data = { message: "Admin toggled" };
+      mock.onPut("/party/toggle-admin").reply(200, data);
+
+      const response = await toggleAdmin("1", "2");
+
+      expect(response).toEqual(data);
+    });
+
+    it("error: should handle errors", async () => {
+      mock.onPut("/party/toggle-admin").reply(500);
+
+      await toggleAdmin("1", "2");
+
+      expect(handleError).toHaveBeenCalledWith(
+        "Ocurrió un error cambiando el admin"
       );
     });
   });
