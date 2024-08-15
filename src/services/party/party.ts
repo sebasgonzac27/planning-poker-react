@@ -45,3 +45,26 @@ export async function toggleAdmin(roomId: string, userId: string) {
     handleError("Ocurrió un error cambiando el admin");
   }
 }
+
+export async function getDistributions() {
+  try {
+    const { data } = await api.get("/party/distributions");
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    handleError("Ocurrió un error obteniendo las distribuciones");
+  }
+}
+
+export async function toggleDistribution(roomId: string, distribution: string) {
+  try {
+    const { data } = await api.put("/party/toggle-distribution", {
+      roomId,
+      distribution,
+    });
+    return data;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    handleError("Ocurrió un error cambiando la distribución");
+  }
+}
