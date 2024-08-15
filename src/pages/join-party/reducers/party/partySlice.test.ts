@@ -7,6 +7,8 @@ import partyReducer, {
   setRevealed,
   setAverage,
   setTotalCount,
+  setInviteModal,
+  setMenuModal,
 } from "./partySlice";
 
 describe("partySlice", () => {
@@ -71,5 +73,15 @@ describe("partySlice", () => {
       setTotalCount({ "test-key": 10 })
     );
     expect(actual.totalCount).toEqual({ "test-key": 10 });
+  });
+
+  test("should handle setInviteModal", () => {
+    const actual = partyReducer(initialState, setInviteModal(true));
+    expect(actual.inviteModal).toEqual(true);
+  });
+
+  test("should handle setMenuModal", () => {
+    const actual = partyReducer(initialState, setMenuModal(true));
+    expect(actual.menuModal).toEqual(true);
   });
 });
