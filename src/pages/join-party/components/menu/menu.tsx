@@ -10,10 +10,15 @@ import { setMenuModal } from "../../reducers/party/partySlice";
 import Modal from "../../../../design-system/molecules/modal/modal.molecule";
 import Select from "../../../../design-system/atoms/select/select.atom";
 import Button from "../../../../design-system/atoms/button/button.atom";
-import { toggleAdmin } from "../../../../services/party/party";
+import {
+  getDistributions,
+  toggleAdmin,
+  toggleDistribution,
+} from "../../../../services/party/party";
+import { Distribution } from "../../interfaces/distribution";
 
 export default function Menu() {
-  const { menuModal, partyId, players } = useSelector(
+  const { menuModal, partyId, players, distribution } = useSelector(
     (state: RootState) => state.party
   );
   const { role, isOwner } = useSelector((state: RootState) => state.user);
@@ -22,13 +27,27 @@ export default function Menu() {
 
   const [selectedRole, setSelectedRole] = useState<PlayerRole>(role);
   const [selectedAdmin, setSelectedAdmin] = useState<string>("");
+  const [selectedDistribution, setSelectedDistribution] = useState<string>("");
+  const [distributions, setDistributions] = useState<Distribution[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const dist = await getDistributions();
+      setDistributions(dist);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     if (players) {
       const currentAdmin = players.find((player) => player.isOwner);
       setSelectedAdmin(currentAdmin?.socketId || "");
     }
-  }, [players]);
+
+    if (distribution) {
+      setSelectedDistribution(distribution.id);
+    }
+  }, [players, distribution]);
 
   const handleChangeRole = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const target = e.target;
@@ -40,6 +59,14 @@ export default function Menu() {
     const target = e.target;
     const value = target.value;
     setSelectedAdmin(value);
+  };
+
+  const handleChangeDistribution = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const target = e.target;
+    const value = target.value;
+    setSelectedDistribution(value);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,6 +81,10 @@ export default function Menu() {
 
     if (isOwner) {
       await toggleAdmin(partyId, selectedAdmin);
+    }
+
+    if (selectedDistribution != distribution?.id) {
+      await toggleDistribution(partyId, selectedDistribution);
     }
 
     handleCloseModal();
@@ -91,20 +122,36 @@ export default function Menu() {
                 <option value={PlayerRole.Viewer}>Espectador</option>
               </Select>
               {isOwner && (
-                <Select
-                  data-testid="admin-select"
-                  label="Administrador"
-                  name="admin"
-                  id="admin"
-                  value={selectedAdmin}
-                  onChange={handleChangeAdmin}
-                >
-                  {players.map(({ socketId, username }) => (
-                    <option key={socketId} value={socketId}>
-                      {username}
-                    </option>
-                  ))}
-                </Select>
+                <>
+                  <Select
+                    data-testid="admin-select"
+                    label="Administrador"
+                    name="admin"
+                    id="admin"
+                    value={selectedAdmin}
+                    onChange={handleChangeAdmin}
+                  >
+                    {players.map(({ socketId, username }) => (
+                      <option key={socketId} value={socketId}>
+                        {username}
+                      </option>
+                    ))}
+                  </Select>
+                  <Select
+                    data-testid="distribution-select"
+                    label="Distribución"
+                    name="distribution"
+                    id="distribution"
+                    value={selectedDistribution}
+                    onChange={handleChangeDistribution}
+                  >
+                    {distributions.map(({ id, name }) => (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    ))}
+                  </Select>
+                </>
               )}
               <Button text="Guardar" variant="primary" />
             </form>
