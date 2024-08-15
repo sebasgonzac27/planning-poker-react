@@ -68,6 +68,10 @@ export default function Main({ partyId }: Props) {
       dispatch(setRevealed(false));
     });
 
+    socket.on("update-distribution", ({ distribution }) => {
+      dispatch(setDistribution(distribution));
+    });
+
     return () => {
       socket.disconnect();
     };

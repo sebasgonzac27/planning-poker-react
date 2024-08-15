@@ -186,4 +186,15 @@ describe("Main", () => {
     expect(mockDispatch).toHaveBeenCalledWith(setAverage(0));
     expect(mockDispatch).toHaveBeenCalledWith(setRevealed(false));
   });
+
+  test("dispatches setDistribution on update-distribution event", () => {
+    render(<Main partyId={partyId} />);
+    const distribution = { id: "test", name: "test", values: [] };
+    const updateDistributionCallback = (socket.on as jest.Mock).mock.calls.find(
+      (call) => call[0] === "update-distribution"
+    )[1];
+    updateDistributionCallback({ distribution });
+
+    expect(mockDispatch).toHaveBeenCalledWith(setDistribution(distribution));
+  });
 });
