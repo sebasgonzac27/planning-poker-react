@@ -26,7 +26,7 @@ export default function Cards() {
     await Vote({
       vote: votePoint as string,
       roomId: partyId,
-      userId: socket.id ?? "",
+      userId: socket.id!,
     });
   };
 
