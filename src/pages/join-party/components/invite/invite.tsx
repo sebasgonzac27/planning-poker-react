@@ -9,7 +9,7 @@ import { setInviteModal } from "../../reducers/party/partySlice";
 
 export default function Invite() {
   const { inviteModal } = useSelector((state: RootState) => state.party);
-  const url = typeof window !== "undefined" ? window.location.href : "";
+  const url = window.location.href;
   const dispatch = useDispatch();
 
   function handleCloseModal() {
@@ -32,7 +32,11 @@ export default function Invite() {
         <Modal>
           <Modal.Header className={styles.invite__header}>
             <h2 className={styles.invite__title}>Invitar jugadores</h2>
-            <button className={styles.invite__close} onClick={handleCloseModal}>
+            <button
+              data-testid="close-button"
+              className={styles.invite__close}
+              onClick={handleCloseModal}
+            >
               <IoCloseOutline />
             </button>
           </Modal.Header>

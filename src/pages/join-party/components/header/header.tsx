@@ -32,7 +32,7 @@ export default function Header() {
         <Avatar
           className={styles.header__avatar}
           variant="small"
-          initials={username.slice(0, 2) || "PR"}
+          initials={username.slice(0, 2)}
           onClick={handleMenu}
         />
         <Button

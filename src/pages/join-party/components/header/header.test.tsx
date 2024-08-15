@@ -1,18 +1,33 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { Provider, useDispatch } from "react-redux";
 import configureStore from "redux-mock-store";
 import Header from "./header";
+import { setInviteModal, setMenuModal } from "../../reducers/party/partySlice";
 
 const mockStore = configureStore([]);
 
+jest.mock("../../reducers/party/partySlice", () => ({
+  setInviteModal: jest.fn(),
+  setMenuModal: jest.fn(),
+}));
+
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useDispatch: jest.fn(),
+}));
+
 describe("Header Component", () => {
   let store: ReturnType<typeof mockStore>;
+  let dispatch: jest.Mock;
 
   beforeEach(() => {
     store = mockStore({
       user: { username: "John Doe" },
       party: { partyName: "Poker Night" },
     });
+
+    dispatch = jest.fn();
+    (useDispatch as unknown as jest.Mock).mockReturnValue(dispatch);
   });
 
   it("renders the header with the logo, title, and avatar initials", () => {
@@ -32,30 +47,29 @@ describe("Header Component", () => {
     expect(avatar).toBeInTheDocument();
   });
 
-  it("renders the invite players button", () => {
+  it("handles click event on invite players button", () => {
     render(
       <Provider store={store}>
         <Header />
       </Provider>
     );
 
-    const button = screen.getByText("Invitar jugadores");
-    expect(button).toBeInTheDocument();
+    const inviteButton = screen.getByText(/Invitar jugadores/i);
+    fireEvent.click(inviteButton);
+
+    expect(dispatch).toHaveBeenCalledWith(setInviteModal(true));
   });
 
-  it("renders default initials if username is not provided", () => {
-    store = mockStore({
-      user: { username: "" },
-      party: { partyName: "Poker Night" },
-    });
-
+  it("handles click event on avatar", () => {
     render(
       <Provider store={store}>
         <Header />
       </Provider>
     );
 
-    const avatar = screen.getByText("PR");
-    expect(avatar).toBeInTheDocument();
+    const avatar = screen.getByText("JO");
+    fireEvent.click(avatar);
+
+    expect(dispatch).toHaveBeenCalledWith(setMenuModal(true));
   });
 });
