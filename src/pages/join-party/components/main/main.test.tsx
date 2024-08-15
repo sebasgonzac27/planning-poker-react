@@ -5,6 +5,9 @@ import {
   setPartyName,
   setPlayers,
   setDistribution,
+  setAverage,
+  setTotalCount,
+  setRevealed,
 } from "../../reducers/party/partySlice";
 import Main from "./main";
 import { socket } from "../../../../utils/socket-instance/socket-instance";
@@ -13,6 +16,7 @@ import {
   setIsOwner,
   setRole,
   setUsername,
+  setVote,
 } from "../../reducers/user/userSlice";
 import { PlayerRole } from "../../enums/player-role";
 
@@ -25,12 +29,16 @@ jest.mock("../../reducers/party/partySlice", () => ({
   setPartyName: jest.fn(),
   setPlayers: jest.fn(),
   setDistribution: jest.fn(),
+  setAverage: jest.fn(),
+  setTotalCount: jest.fn(),
+  setRevealed: jest.fn(),
 }));
 
 jest.mock("../../reducers/user/userSlice", () => ({
   setIsOwner: jest.fn(),
   setRole: jest.fn(),
   setUsername: jest.fn(),
+  setVote: jest.fn(),
 }));
 
 jest.mock("../header/header", () => () => <div>Header Component</div>);
@@ -124,5 +132,58 @@ describe("Main", () => {
     expect(mockDispatch).toHaveBeenCalledWith(setUsername("test-user"));
     expect(mockDispatch).toHaveBeenCalledWith(setRole(PlayerRole.Player));
     expect(mockDispatch).toHaveBeenCalledWith(setIsOwner(true));
+  });
+
+  test("dispatches setPlayers on update-players event", () => {
+    render(<Main partyId={partyId} />);
+    const players: Player[] = [
+      {
+        socketId: "test-socket-id",
+        username: "test-user",
+        role: PlayerRole.Player,
+        isOwner: true,
+      },
+    ];
+    const updatePlayersCallback = (socket.on as jest.Mock).mock.calls.find(
+      (call) => call[0] === "update-players"
+    )[1];
+    updatePlayersCallback({ players });
+
+    expect(mockDispatch).toHaveBeenCalledWith(setPlayers(players));
+  });
+
+  test("dispatches setAverage, setTotalCount, and setRevealed on reveal-cards event", () => {
+    render(<Main partyId={partyId} />);
+    const average = 5;
+    const votesCount = { "10": 2 };
+    const revealCardsCallback = (socket.on as jest.Mock).mock.calls.find(
+      (call) => call[0] === "reveal-cards"
+    )[1];
+    revealCardsCallback({ average, votesCount });
+
+    expect(mockDispatch).toHaveBeenCalledWith(setAverage(average));
+    expect(mockDispatch).toHaveBeenCalledWith(setTotalCount(votesCount));
+    expect(mockDispatch).toHaveBeenCalledWith(setRevealed(true));
+  });
+
+  test("dispatches setVote, setAverage, setRevealed, and setPlayers on reset-party event", () => {
+    render(<Main partyId={partyId} />);
+    const players: Player[] = [
+      {
+        socketId: "test-socket-id",
+        username: "test-user",
+        role: PlayerRole.Player,
+        isOwner: true,
+      },
+    ];
+    const resetPartyCallback = (socket.on as jest.Mock).mock.calls.find(
+      (call) => call[0] === "reset-party"
+    )[1];
+    resetPartyCallback({ players });
+
+    expect(mockDispatch).toHaveBeenCalledWith(setPlayers(players));
+    expect(mockDispatch).toHaveBeenCalledWith(setVote(null));
+    expect(mockDispatch).toHaveBeenCalledWith(setAverage(0));
+    expect(mockDispatch).toHaveBeenCalledWith(setRevealed(false));
   });
 });
